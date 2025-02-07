@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, services, ... }:
 
 {
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware.nvidia = {
     modesetting.enable = true;
 

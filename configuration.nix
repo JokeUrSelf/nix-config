@@ -11,7 +11,7 @@ let
   ) {};
 in
 {
-  imports = [ ./hardware-configuration.nix ./nvidia-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ./nvidia-configuration.nix ./dark-theme.nix ];
 
   boot.loader = { 
     systemd-boot.enable = true;
@@ -37,23 +37,20 @@ in
     LC_TIME = "pl_PL.UTF-8";
   };
 
+  services.libinput.enable = true;
+
   services.xserver = {
     enable = true;
 
-    videoDrivers = [ "nvidia" ];
     desktopManager.xterm.enable = false;
 
     displayManager.lightdm.enable = true;
     windowManager.i3.enable = true;
-    # desktopManager.gnome.enable = true;
     
     xkb = {
       layout = "us";
       variant = "colemak";
     };
-
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput.enable = true;
   };
 
   services.printing.enable = true;
@@ -77,7 +74,6 @@ in
     ];
   };
 
-  # Install firefox.
   programs.firefox.enable = true;
 
   # Allow unfree packages
@@ -114,6 +110,11 @@ in
   # };
 
   # services.openssh.enable = true;
+
+
+  environment.shellInit = ''
+    bash /etc/nixos/scripts/multiple-monitors.bash
+  '';
 
   system.stateVersion = "24.11";
 }
