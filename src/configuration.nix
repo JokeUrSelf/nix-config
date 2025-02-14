@@ -55,8 +55,9 @@ in
     windowManager.i3.enable = true;
     
     xkb = {
-      layout = "us";
-      variant = "colemak";
+      layout = "pl,ru";
+      variant = "colemak,,";
+      options = "grp:alt_shift_toggle";
     };
   };
 
