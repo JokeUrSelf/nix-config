@@ -1,21 +1,21 @@
 MAKEFLAGS += --silent
 
-NIXOS_DIR := /etc/nixos/
+NIXOS_DIR := $(shell echo $$NIX_PATH | sed 's/.*nixos-config=\([^:]*\)\/.*/\1/')
 BASE_DIR := $(shell pwd)
-SRC_DIR := ${BASE_DIR}/src
+DIST_DIR := ${BASE_DIR}/dist
 
 apply-config:
-	sudo cp -r -a ${SRC_DIR}/* ${NIXOS_DIR}
+	sudo cp -r -a ${DIST_DIR}/* ${NIXOS_DIR}
 
-build: apply-config
+build:
 	sudo nixos-rebuild switch
 
-build-fast: apply-config
+build-fast:
 	sudo nixos-rebuild switch --fast
 
-rebuild: apply-config
+rebuild:
 	sudo nixos-rebuild switch --rollback
 
-rebuild-fast: apply-config
+rebuild-fast:
 	sudo nixos-rebuild switch --rollback --fast
 

@@ -12,7 +12,6 @@ let
 in
 {
   imports = [ 
-    ./hardware-configuration.nix 
     ./nvidia-configuration.nix 
     ./dark-theme.nix 
     ./systemd-configuration.nix
