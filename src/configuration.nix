@@ -12,15 +12,14 @@ let
 in
 {
   imports = [ 
-    ./nvidia-configuration.nix 
-    ./dark-theme.nix 
-    ./systemd-configuration.nix
+    ./hardware-configuration.nix 
+    ./dark-theme.nix
     ./users.nix
   ];
 
   boot.loader = { 
     systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    efi.canTouchEfiVariables = false;
   };
 
   networking.hostName = "nixos";
@@ -47,6 +46,8 @@ in
   services.xserver = {
     enable = true;
 
+    libinput.naturalScrolling = true;
+
     desktopManager.xterm.enable = false;
 
     displayManager.lightdm.enable = true;
@@ -71,7 +72,6 @@ in
     pulse.enable = true;
   };
 
-
   programs.firefox.enable = true;
 
   nixpkgs.config = { 
@@ -87,6 +87,7 @@ in
     vscode
     jetbrains.pycharm-community
 
+    efibootmgr
     gcc
     git
     gh
@@ -102,7 +103,7 @@ in
   ];
 
   environment.shellInit = ''
-    /etc/nixos/scripts/multiple-monitors.sh
+    /etc/nixos/src/scripts/multiple-monitors.sh
   '';
 
   system.stateVersion = "24.11";

@@ -3,7 +3,7 @@
 let
   nixConfigRepo = builtins.fetchGit {
     url = "https://github.com/JokeUrSelf/nix-config.git";
-    ref = "main";
+    rev = "main";
   };
 in
 {
