@@ -19,7 +19,10 @@ backup-config:
 apply-config: backup-config
 	sudo cp -r -a ${DIST_DIR}/* ${NIXOS_DIR}
 
-apply-config-local: backup-config
+generate-dependencies:
+	sudo ${BASE_DIR}/wrap_appimages.sh
+
+apply-config-local: backup-config generate-dependencies
 	sudo rm -rf ${NIXOS_DIR}/*
 	sudo sh -c "nixos-generate-config --show-hardware-config >> ${NIXOS_DIR}/hardware-configuration.nix"
 	sudo cp -r -a ${LOCAL_DIR}/* ${NIXOS_DIR}

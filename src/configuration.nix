@@ -12,9 +12,9 @@ let
 in
 {
   imports = [ 
-    ./hardware-configuration.nix 
+    ./hardware/hardware-configuration.nix 
     ./dark-theme.nix
-    ./users.nix
+    ./users/users.nix
   ];
 
   boot.loader = { 
@@ -80,6 +80,8 @@ in
   };
 
   environment.systemPackages = with pkgs; [
+    (import /etc/nixos/src/appimages.nix { inherit (pkgs) appimageTools; })
+
     ghostty
     flameshot
 

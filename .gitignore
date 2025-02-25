@@ -2,3 +2,4 @@ hardware-configuration.nix
 users.nix
 backup/
 local/src/
+appimages/
