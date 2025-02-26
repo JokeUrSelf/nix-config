@@ -79,6 +79,8 @@ in
     nvidia.acceptLicense = true;
   };
 
+  virtualisation.docker.enable = true;
+
   environment.systemPackages = with pkgs; [
     (import /etc/nixos/src/appimages.nix { inherit (pkgs) appimageTools; })
     jre
