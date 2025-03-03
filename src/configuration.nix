@@ -90,6 +90,7 @@ in
     neovim
     vscode
     jetbrains.pycharm-community
+    jetbrains.rider
 
     efibootmgr
     gcc
