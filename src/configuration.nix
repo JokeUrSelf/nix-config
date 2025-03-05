@@ -80,6 +80,7 @@ in
   };
 
   virtualisation.docker.enable = true;
+  virtualisation.docker.storageDriver = "overlay2";
 
   environment.systemPackages = with pkgs; [
     (import /etc/nixos/src/appimages.nix { inherit (pkgs) appimageTools; })
