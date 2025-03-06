@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [ gnome.gnome-themes-extra papirus-icon-theme libsForQt5.qtstyleplugin-kvantum capitaine-cursors ];
+  environment.systemPackages = with pkgs; [ gnome-themes-extra papirus-icon-theme libsForQt5.qtstyleplugin-kvantum capitaine-cursors ];
 
   environment.variables = {
     GTK_THEME = "Adwaita-dark"; 

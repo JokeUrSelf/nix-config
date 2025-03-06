@@ -46,17 +46,20 @@ in
     LC_TIME = "pl_PL.UTF-8";
   };
 
-  services.libinput.enable = true;
+  services.libinput = {
+    enable = true;
+    touchpad.naturalScrolling = true;
+  };
 
+  services.displayManager.defaultSession = "none+i3";
+  
   services.xserver = {
     enable = true;
-
-    libinput.naturalScrolling = true;
 
     desktopManager.xterm.enable = false;
 
     displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "none+i3";
+    
     windowManager.i3.enable = true;
     
     xkb = {
