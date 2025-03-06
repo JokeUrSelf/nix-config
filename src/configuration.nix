@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 let
+  environment.variables = {
+    NIXOS = ./.;
+  };
+
   nix-software-center = import (
     pkgs.fetchFromGitHub {
       owner = "snowfallorg";
@@ -11,8 +15,9 @@ let
   ) {};
 in
 {
-  imports = [ 
-    ./hardware/hardware-configuration.nix 
+  imports = [
+    ./hardware-configuration.nix
+    ./hardware
     ./dark-theme.nix
     ./users/users.nix
   ];
@@ -83,7 +88,7 @@ in
   virtualisation.docker.storageDriver = "overlay2";
 
   environment.systemPackages = with pkgs; [
-    (import /etc/nixos/src/appimages.nix { inherit (pkgs) appimageTools; })
+    (import /etc/nixos/appimages.nix { inherit (pkgs) appimageTools; })
     jre
     ghostty
     flameshot

@@ -15,7 +15,7 @@ $APPIMAGES_CONF
 
 appimageTools.wrapType2 {
   name = "$pkg_name";
-  src = builtins.path { path = "$NIXOS_DIR/src/appimages/$(basename $file)"; };
+  src = builtins.path { path = "$NIXOS_DIR/appimages/$(basename $file)"; };
 }
 EOF
 )
