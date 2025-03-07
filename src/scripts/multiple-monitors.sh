@@ -1,8 +1,9 @@
+#!/bin/sh
+
 xrandr --auto
 
-connected_outputs=$(xrandr --listmonitors | awk '/\+/ { gsub(/^\+\*/, "", $2); print $2 }')
+PRIMARY=$(xrandr --query | grep " connected" | grep "primary" | cut -d" " -f1)
+CONNECTED=$(xrandr --query | grep " connected" | grep -v "primary" | cut -d" " -f1)
+SECOND=$(echo "$CONNECTED" | awk '{print $1}')
 
-primary_monitor=$(echo "$connected_outputs" | head -n 1)
-second_monitor=$(echo "$connected_outputs" | awk 'NR==2')
-
-xrandr --output "$second_monitor" --above "$primary_monitor" --auto
+xrandr --output "$SECOND" --above "$PRIMARY" --auto
