@@ -1,0 +1,21 @@
+[package]
+name = "nix-editor"
+version = "0.3.0"
+edition = "2021"
+license = "MIT"
+description = "Some functions to modify NixOS configuration files"
+repository = "https://github.com/vlinkz/nix-editor/"
+readme = "README.md"
+include = [
+  "src/*",
+  "Cargo.toml",
+  "LICENSE*",
+  "README.md",
+]
+
+[dependencies]
+clap =  { version = "4.1", features = ["derive"] }
+rnix = "0.11"
+owo-colors = "3.5"
+thiserror = "1.0"
+nixpkgs-fmt = "1.3"
