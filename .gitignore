@@ -1,4 +1,8 @@
-users.nix
+.env
+dist/
 backup/
-local/src/
 appimages/
+src/conf/users/*
+
+!src/conf/users/default.nix
+!*.example*

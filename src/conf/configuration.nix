@@ -18,8 +18,8 @@ in
   imports = [
     ./hardware-configuration.nix
     ./hardware
+    ./users
     ./dark-theme.nix
-    ./users/users.nix
   ];
 
   boot.loader = { 
@@ -33,7 +33,6 @@ in
   time.timeZone = "Europe/Warsaw";
 
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "pl_PL.UTF-8";
     LC_IDENTIFICATION = "pl_PL.UTF-8";
@@ -50,14 +49,11 @@ in
     enable = true;
     touchpad.naturalScrolling = true;
   };
-
   services.displayManager.defaultSession = "none+i3";
-  
   services.xserver = {
     enable = true;
 
     desktopManager.xterm.enable = false;
-
     displayManager.lightdm.enable = true;
     
     windowManager.i3.enable = true;

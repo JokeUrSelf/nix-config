@@ -1,26 +1,36 @@
 .ONESHELL:
 
+include .env
+
 MAKEFLAGS += --silent
 
-NIXOS_DIR := $(shell echo $$NIX_PATH | sed 's/.*nixos-config=\([^:]*\)\/.*/\1/')
 BASE_DIR := $(shell pwd)
+DIST_DIR := ${BASE_DIR}/dist
 SRC_DIR := ${BASE_DIR}/src
+CONF_DIR := ${SRC_DIR}/conf
+GEN_DIR := ${SRC_DIR}/generators
 
-backup-config:
+config-backup:
 	CURRENT_DATE=$$(date +"%Y-%m-%d_%H-%M-%S")
-
-	if [[ $$(ls ${NIXOS_DIR}) = *[!\ ]* ]]; then
+	if [[ $$(ls ${NIXOS}) = *[!\ ]* ]]; then
 		mkdir -p ${BASE_DIR}/backup/$$CURRENT_DATE
-		cp -r -a ${NIXOS_DIR}/* ${BASE_DIR}/backup/$$CURRENT_DATE
+		cp -r -a ${NIXOS}/* ${BASE_DIR}/backup/$$CURRENT_DATE
 	fi
 
-generate-dependencies:
-	sudo ${BASE_DIR}/wrap_appimages.sh
+config-generate:
+	-rm -rf ${DIST_DIR}
+	mkdir -p ${DIST_DIR}
+	cp -r -a ${CONF_DIR}/* ${DIST_DIR}
+	for FILE in "${GEN_DIR}"/*; do
+		if [ -f "$$FILE" ]; then
+			chmod +x $$FILE
+			eval $$(cat .env) ./helloworld.sh $$FILE
+		fi
+	done
 
-apply-config: backup-config generate-dependencies
-	sudo rm -rf ${NIXOS_DIR}/*
-	sudo sh -c "nixos-generate-config --show-hardware-config >> ${NIXOS_DIR}/hardware-configuration.nix"
-	sudo cp -r -a ${SRC_DIR}/* ${NIXOS_DIR}
+config-apply: config-backup config-generate
+	sudo rm -rf ${NIXOS}/*
+	sudo cp -r -a ${CONF_DIR}/* ${NIXOS}
 
 test:
 	sudo nixos-rebuild test
@@ -37,6 +47,6 @@ rebuild:
 rebuild-fast:
 	sudo nixos-rebuild switch --rollback --fast
 
-alb: apply-config build
+alb: config-apply build
 
-.PHONY: test backup-config generate-dependencies apply-config build build-fast rebuild rebuild-fast alb
+.PHONY: test config-backup config-generate config-apply build build-fast rebuild rebuild-fast alb
