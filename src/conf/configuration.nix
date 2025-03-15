@@ -13,6 +13,8 @@ let
       sha256 = "xiqF1mP8wFubdsAQ1BmfjzCgOD3YZf7EGWl9i69FTls=";
     }
   ) {};
+
+  local-appimages = import ./appimages.nix { inherit (pkgs) appimageTools lib; };
 in
 {
   imports = [
@@ -77,6 +79,8 @@ in
   };
 
   programs.firefox.enable = true;
+  programs.neovim.enable = true;
+  programs.neovim.defaultEditor = true;
 
   nixpkgs.config = { 
     allowUnfree = true;
@@ -86,13 +90,13 @@ in
   virtualisation.docker.enable = true;
   virtualisation.docker.storageDriver = "overlay2";
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   environment.systemPackages = with pkgs; [
-    (import /etc/nixos/appimages.nix { inherit (pkgs) appimageTools; })
+    local-appimages.apidog
     jre
     ghostty
     flameshot
 
-    neovim
     vscode
     jetbrains.pycharm-community
     jetbrains.rider

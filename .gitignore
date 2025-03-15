@@ -2,6 +2,7 @@
 dist/
 backup/
 appimages/
+result/
 src/conf/users/*
 
 !src/conf/users/default.nix

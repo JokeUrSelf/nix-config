@@ -1,7 +1,7 @@
 { ... }:
 
 let
-  user = "${USER_FIELD}";
+  user = "${USERNAME_FIELD}";
 in
 
 {

@@ -1,8 +1,10 @@
 { ... }:
+
 let
-  allFiles = builtins.attrNames (builtins.readDir ./.);
-  filteredFiles = builtins.filter (file: file != "default.nix") allFiles;
+  files = builtins.attrNames (builtins.readDir ./.);
+  paths = builtins.map (file: (builtins.toString ./.) + "/" + file) (builtins.filter (file: file != "default.nix") files);
 in
+
 {
-  imports = filteredFiles;
+  imports = paths;
 }
