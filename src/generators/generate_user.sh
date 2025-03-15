@@ -1,14 +1,15 @@
 #!/bin/sh
 
-TEMPLATES="$BASE_DIR/src/generators/templates/"
+USERS_DIR="${BASE_DIR}/src/conf/users"
+TEMPLATES_DIR="${BASE_DIR}/src/templates"
 
-APPIMAGES_CONF="{ appimageTools }:"
+if [ "$(find "$USERS_DIR" -maxdepth 1 -type f ! -name "default.nix" | wc -l)" -gt 0 ]; then
+  exit 0
+fi
 
-for file in "$APPIMAGES"/*; do
-  chmod +x "$file"
+echo "No users were defined in $USERS_DIR directory. Generating a default user..."
+echo "Enter the username: "
+read -r USERNAME_FIELD
 
-  PKG_NAME_FIELD=$(basename $file .AppImage | tr '[:upper:]' '[:lower:]')
-
-  APPIMAGES_CONF=$(cat "$TEMPLATES/appimage.template.nix")
-  echo "$APPIMAGES_CONF" >> "$BASE_DIR/dist/appimages.nix"
-done
+export USERNAME_FIELD
+envsubst < "$TEMPLATES_DIR/user.template.nix" 

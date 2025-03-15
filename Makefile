@@ -1,14 +1,17 @@
 .ONESHELL:
 
-include .env
-
 MAKEFLAGS += --silent
 
-BASE_DIR := $(shell pwd)
-DIST_DIR := ${BASE_DIR}/dist
-SRC_DIR := ${BASE_DIR}/src
-CONF_DIR := ${SRC_DIR}/conf
-GEN_DIR := ${SRC_DIR}/generators
+.nix.env:
+	nix-shell --run true
+
+include .nix.env
+export
+
+ENV_VARS := "$$(cat ./.env | xargs)"
+
+shell-rebuild:
+	nix-shell --run true
 
 config-backup:
 	CURRENT_DATE=$$(date +"%Y-%m-%d_%H-%M-%S")
@@ -24,29 +27,35 @@ config-generate:
 	for FILE in "${GEN_DIR}"/*; do
 		if [ -f "$$FILE" ]; then
 			chmod +x $$FILE
-			eval $$(cat .env) ./helloworld.sh $$FILE
+			$$FILE
 		fi
 	done
 
 config-apply: config-backup config-generate
 	sudo rm -rf ${NIXOS}/*
-	sudo cp -r -a ${CONF_DIR}/* ${NIXOS}
+	sudo cp -r -a ${DIST_DIR}/* ${NIXOS}
+
+nix-editor-update:
+	git subtree pull --prefix=nix-editor https://github.com/snowfallorg/nix-editor.git main --squash
+
+nix-editor:
+	nix-env -f nix-editor -i nix-editor
 
 test:
-	sudo nixos-rebuild test
+	eval sudo ${ENV_VARS} nixos-rebuild test
 
 build:
-	sudo nixos-rebuild switch
+	eval sudo ${ENV_VARS} nixos-rebuild switch
 
 build-fast:
-	sudo nixos-rebuild switch --fast
+	eval sudo ${ENV_VARS} nixos-rebuild switch --fast
 
 rebuild:
-	sudo nixos-rebuild switch --rollback
+	eval sudo ${ENV_VARS} nixos-rebuild switch --rollback
 
 rebuild-fast:
-	sudo nixos-rebuild switch --rollback --fast
+	eval sudo ${ENV_VARS} nixos-rebuild switch --rollback --fast
 
 alb: config-apply build
 
-.PHONY: test config-backup config-generate config-apply build build-fast rebuild rebuild-fast alb
+.PHONY: test config-backup config-generate config-apply build build-fast rebuild rebuild-fast alb nix-editor

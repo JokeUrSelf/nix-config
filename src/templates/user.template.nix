@@ -1,13 +1,9 @@
 { ... }:
 
-let
-  user = "${USER_FIELD}";
-in
-
 {
-  users.users."${user}" = {
+  users.users."${USERNAME_FIELD}" = {
     isNormalUser = true;
-    home = "/home/${user}";
+    home = "/home/${USERNAME_FIELD}";
     extraGroups = [ "wheel" "networkmanager" "docker" ];
   };
 }
