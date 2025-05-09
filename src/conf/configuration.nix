@@ -143,6 +143,7 @@ in
       flameshot
 
       godot_4
+      postman
 
       vscode
       nil
